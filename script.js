@@ -3,6 +3,7 @@ const values = [0,0,0,0,0,0,0,0,0];
 const winningCombinations = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
 const playerXValue = 10;
 const playerOValue = 100;
+let gameEnd = false;
 const startGameBtn = document.querySelector("#start-game");
 
 startGameBtn.addEventListener('click', startGame);
@@ -21,10 +22,19 @@ function displayBoard() {
 
 function playGame() {
     for (let i=0; i < 4; i++) {
-        getPlayerXChoice();
-        getPlayerOChoice();
+        if (gameEnd != true) {
+            getPlayerXChoice();
+            if (gameEnd != true) {
+                getPlayerOChoice();
+            }
+        }
     }
-    getPlayerXChoice();
+    if (gameEnd != true) {
+        getPlayerXChoice();
+        if (gameEnd != true) {
+            console.log("It's a Draw!")
+        }
+    }
 }
 
 function getPlayerXChoice() {
@@ -58,15 +68,19 @@ function findWinner() {
             winningCombinationSum += values[winningCombinationCell];
         }
         if (winningCombinationSum == 30) {
-            console.log("Player X Wins!");
-            console.log("Winning Combination: " + winningCombinationsItem);
+            declareWinner("Player X", winningCombinationsItem);
         }
         else if (winningCombinationSum == 300) {
-            console.log("Player O Wins!")
-            console.log("Winning Combination: " + winningCombinationsItem);
+            declareWinner("Player O", winningCombinationsItem);
         }
         else {
             winningCombinationSum = 0;
         }
     }
+}
+
+function declareWinner(name, wCombination) {
+    console.log(`${name} Wins!`);
+    console.log(`Winning Combination: ${wCombination}`);
+    gameEnd = true;
 }
